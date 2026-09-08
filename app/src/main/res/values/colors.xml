@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="warehouse_blue">#1976C9</color>
+    <color name="warehouse_blue_dark">#125B9A</color>
+    <color name="warehouse_blue_background">#E7F2FC</color>
+    <color name="warehouse_text">#141923</color>
+    <color name="warehouse_muted">#6F7C8E</color>
+    <color name="warehouse_divider">#E3E8EF</color>
+    <color name="warehouse_progress_track">#DDE4EC</color>
+    <color name="warehouse_error">#B8273D</color>
+    <color name="warehouse_error_background">#FDECEE</color>
+    <color name="warehouse_warning">#B66513</color>
+    <color name="warehouse_warning_background">#FFF3DD</color>
+    <color name="warehouse_disabled">#B9C5D6</color>
+    <color name="warehouse_success">#237A49</color>
+    <color name="warehouse_success_background">#E5F5EB</color>
+    <color name="warehouse_screen_background">#F5F7FA</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

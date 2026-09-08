@@ -1,0 +1,102 @@
+// Схема данных для учета товаров и их размещения на складе/в магазине.
+
+Enum product_marking_type {
+  qr
+  barcode
+}
+
+Enum storage_cell_type {
+  warehouse
+  store_shelf
+  box
+}
+
+Enum product_unit_status {
+  available
+  reserved
+  shipped
+  written_off
+}
+
+Table products {
+  id bigint [pk, increment]
+  sku varchar(64) [not null, unique, note: 'Внутренний артикул группы товаров']
+  name varchar(255) [not null]
+  description text
+  marking_type product_marking_type [not null, note: 'Способ маркировки: уникальный QR для каждой единицы либо общий штрихкод для группы']
+  width_mm decimal(10,2) [not null]
+  height_mm decimal(10,2) [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  checks {
+    `width_mm > 0` [name: 'products_width_positive']
+    `height_mm > 0` [name: 'products_height_positive']
+  }
+
+  Note: 'Карточка товара (SKU). Для marking_type=qr физические экземпляры находятся в qr_codes; для marking_type=barcode товару соответствует одна запись в bar_codes.'
+}
+
+Table bar_codes {
+  id bigint [pk, increment]
+  product_id bigint [not null, unique, ref: > products.id]
+  code varchar(128) [not null, unique, note: 'Штрихкод, общий для всей группы одинаковых товаров']
+  format varchar(32) [note: 'Например: EAN_13, EAN_8, CODE_128']
+  created_at timestamp [not null, default: `now()`]
+
+  Note: 'Групповой штрихкод. Ограничение unique на product_id задает не более одного штрихкода для карточки товара.'
+}
+
+Table storage_cells {
+  id bigint [pk, increment]
+  code varchar(64) [not null, unique, note: 'Человекочитаемый код ячейки']
+  type storage_cell_type [not null]
+  address varchar(500) [not null, note: 'Адрес или путь: склад, зона, ряд, стеллаж, полка']
+  width_mm decimal(10,2) [not null]
+  height_mm decimal(10,2) [not null]
+  current_product_id bigint [ref: > products.id, note: 'Вид товара, который сейчас находится в ячейке']
+  current_quantity int [not null, default: 0]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    (current_product_id)
+    (type)
+  }
+
+  checks {
+    `width_mm > 0` [name: 'storage_cells_width_positive']
+    `height_mm > 0` [name: 'storage_cells_height_positive']
+    `current_quantity >= 0` [name: 'storage_cells_quantity_non_negative']
+    `(current_product_id IS NULL AND current_quantity = 0) OR (current_product_id IS NOT NULL AND current_quantity > 0)` [name: 'storage_cells_product_quantity_consistent']
+  }
+
+  Note: 'Ячейка рассчитана на один вид товара одновременно. Пустая ячейка имеет current_product_id=NULL и current_quantity=0.'
+}
+
+Table qr_codes {
+  id bigint [pk, increment]
+  code varchar(512) [not null, unique, note: 'Уникальное значение QR-кода физической единицы товара']
+  product_id bigint [not null, ref: > products.id]
+  current_storage_cell_id bigint [ref: > storage_cells.id, note: 'Текущее местоположение экземпляра; NULL, если товар вне ячейки']
+  serial_number varchar(128) [unique]
+  batch_number varchar(128)
+  manufactured_at date [not null]
+  expires_at date
+  status product_unit_status [not null, default: 'available']
+  payload json [note: 'Дополнительные данные, содержащиеся в QR-коде']
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    (product_id)
+    (current_storage_cell_id)
+    (batch_number)
+  }
+
+  checks {
+    `expires_at IS NULL OR expires_at >= manufactured_at` [name: 'qr_codes_expiration_after_manufacture']
+  }
+
+  Note: 'Одна запись соответствует одной физической единице товара. Уникальность code обеспечивает уникальный QR для каждого экземпляра.'
+}
