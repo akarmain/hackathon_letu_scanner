@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/discrepancy_message"
+            android:textColor="@color/warehouse_text"
+            android:textSize="17sp" />
+
+        <RadioGroup
+            android:id="@+id/discrepancyReasonGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <RadioButton
+                android:id="@+id/reasonShortage"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/reason_shortage"
+                android:textSize="17sp" />
+
+            <RadioButton
+                android:id="@+id/reasonDamage"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/reason_damage"
+                android:textSize="17sp" />
+
+            <RadioButton
+                android:id="@+id/reasonInvoiceError"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/reason_invoice_error"
+                android:textSize="17sp" />
+
+            <RadioButton
+                android:id="@+id/reasonOther"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/reason_other"
+                android:textSize="17sp" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/customReasonInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/custom_reason_hint"
+            android:importantForAutofill="no"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLength="200"
+            android:minHeight="64dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/reasonSelectionError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/reason_selection_required"
+            android:textColor="@color/warehouse_error"
+            android:textSize="15sp"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

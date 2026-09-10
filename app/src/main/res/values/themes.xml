@@ -10,6 +10,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:fontFamily">sans</item>
         <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowBackground">@color/warehouse_screen_background</item>
         <item name="actionBarStyle">@style/WarehouseActionBar</item>
     </style>
 

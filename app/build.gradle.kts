@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":scanner"))
     implementation(libs.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)

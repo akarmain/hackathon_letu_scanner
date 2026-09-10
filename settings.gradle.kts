@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "hackathon_letu_scanner"
 include(":app")
- 
+include(":scanner")

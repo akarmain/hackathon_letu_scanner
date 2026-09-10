@@ -13,7 +13,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bindOperationButton(R.id.receivingButton, R.string.action_receiving);
+        findViewById(R.id.receivingButton).setOnClickListener(view ->
+                startActivity(new Intent(this, ReceivingInvoiceListActivity.class))
+        );
         bindOperationButton(R.id.inventoryButton, R.string.action_inventory);
         bindOperationButton(R.id.placementButton, R.string.action_placement);
         bindOperationButton(R.id.replenishmentButton, R.string.action_replenishment);

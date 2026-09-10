@@ -11,11 +11,30 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_heading"
+            android:textColor="@color/warehouse_text"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/main_subheading"
+            android:textColor="@color/warehouse_muted"
+            android:textSize="17sp" />
+
         <Button
             android:id="@+id/receivingButton"
             android:layout_width="match_parent"
             android:layout_height="64dp"
+            android:backgroundTint="@color/warehouse_blue"
             android:text="@string/action_receiving"
+            android:textColor="@color/white"
             android:textAllCaps="false"
             android:textSize="18sp" />
 
