@@ -15,15 +15,7 @@
         android:theme="@style/Theme.Hackathon_letu_scanner">
 
         <activity
-            android:name=".BoxContentsActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".OperationActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ReceivingListActivity"
             android:exported="false" />
 
         <activity
