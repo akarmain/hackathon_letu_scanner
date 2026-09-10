@@ -4,7 +4,9 @@ import android.media.Image;
 import android.util.Size;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.OptIn;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
@@ -37,12 +39,21 @@ final class MlKitScannerEngine implements ScannerEngine {
     private ProcessCameraProvider cameraProvider;
     private Callback callback;
 
-    MlKitScannerEngine(LifecycleOwner lifecycleOwner, PreviewView previewView) {
+    MlKitScannerEngine(LifecycleOwner lifecycleOwner, PreviewView previewView, int scanMode) {
         this.lifecycleOwner = lifecycleOwner;
         this.previewView = previewView;
-        BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_EAN_13)
-                .build();
+        BarcodeScannerOptions.Builder optionsBuilder = new BarcodeScannerOptions.Builder();
+        if (scanMode == ScannerRequest.MODE_LOCATION) {
+            optionsBuilder.setBarcodeFormats(
+                    Barcode.FORMAT_EAN_13,
+                    Barcode.FORMAT_QR_CODE,
+                    Barcode.FORMAT_CODE_128,
+                    Barcode.FORMAT_DATA_MATRIX
+            );
+        } else {
+            optionsBuilder.setBarcodeFormats(Barcode.FORMAT_EAN_13);
+        }
+        BarcodeScannerOptions options = optionsBuilder.build();
         barcodeScanner = BarcodeScanning.getClient(options);
     }
 
@@ -87,6 +98,7 @@ final class MlKitScannerEngine implements ScannerEngine {
         );
     }
 
+    @OptIn(markerClass = ExperimentalGetImage.class)
     private void analyze(@NonNull ImageProxy imageProxy) {
         if (delivered.get() || !processing.compareAndSet(false, true)) {
             imageProxy.close();

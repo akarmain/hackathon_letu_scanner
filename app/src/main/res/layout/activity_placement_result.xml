@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:background="@drawable/bg_success_circle"
+            android:gravity="center"
+            android:text="@string/success_mark"
+            android:textColor="@color/warehouse_success"
+            android:textSize="46sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:text="@string/placement_result_heading"
+            android:textColor="@color/warehouse_text"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/placementResultQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center"
+            android:textColor="@color/warehouse_text"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/placement_result_task"
+            android:textColor="@color/warehouse_muted"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/placementResultTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="@color/warehouse_muted"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_state_success"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/placement_result_success"
+            android:textColor="@color/warehouse_success"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/placementBackToOperationsButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="@color/warehouse_blue"
+            android:text="@string/action_back_to_operations"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

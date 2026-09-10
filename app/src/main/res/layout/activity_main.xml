@@ -64,5 +64,17 @@
             android:text="@string/action_replenishment"
             android:textAllCaps="false"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/warehouse_error_background"
+            android:text="@string/action_reset"
+            android:textAllCaps="false"
+            android:textColor="@color/warehouse_error"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

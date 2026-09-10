@@ -3,6 +3,7 @@ package com.example.hackathon_letu_scanner.receiving;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,10 +18,12 @@ public final class ReceivingRepository {
 
     private final SharedPreferences preferences;
     private final List<ReceivingInvoice> invoices;
+    private final File photoDirectory;
 
     private ReceivingRepository(Context context) {
-        preferences = context.getApplicationContext()
-                .getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        Context applicationContext = context.getApplicationContext();
+        preferences = applicationContext.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        photoDirectory = new File(applicationContext.getCacheDir(), "receiving");
         invoices = createDemoInvoices();
     }
 
@@ -139,6 +142,20 @@ public final class ReceivingRepository {
 
     public String getInvoicePhoto(String invoiceId) {
         return preferences.getString(photoKey(invoiceId), "");
+    }
+
+    /** Restores all demo receiving tasks to their initial state. */
+    public void reset() {
+        preferences.edit().clear().apply();
+        File[] photos = photoDirectory.listFiles();
+        if (photos != null) {
+            for (File photo : photos) {
+                if (photo.isFile()) {
+                    // A failed deletion is harmless: the cleared URI is no longer visible to the app.
+                    photo.delete();
+                }
+            }
+        }
     }
 
     private static String quantityKey(String invoiceId, String itemId) {

@@ -24,4 +24,15 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="Theme.Hackathon_letu_scanner.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/warehouse_blue</item>
+        <item name="colorPrimaryVariant">@color/warehouse_blue_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/warehouse_blue</item>
+        <item name="android:statusBarColor">@color/warehouse_blue_dark</item>
+        <item name="android:navigationBarColor">@color/warehouse_blue_dark</item>
+        <item name="android:windowBackground">@color/warehouse_screen_background</item>
+        <item name="android:fontFamily">sans</item>
+    </style>
 </resources>

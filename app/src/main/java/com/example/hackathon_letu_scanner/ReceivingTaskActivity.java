@@ -24,6 +24,7 @@ import com.example.hackathon_letu_scanner.receiving.ReceivingPolicy;
 import com.example.hackathon_letu_scanner.receiving.ReceivingRepository;
 import com.example.hackathon_letu_scanner.receiving.ScanValidation;
 import com.example.warehouse.scanner.BarcodeScannerContract;
+import com.example.warehouse.scanner.ScannerRequest;
 
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public final class ReceivingTaskActivity extends AppCompatActivity {
     private TextView progressText;
     private TextView stateMessage;
 
-    private final ActivityResultLauncher<Void> scannerLauncher =
+    private final ActivityResultLauncher<ScannerRequest> scannerLauncher =
             registerForActivityResult(new BarcodeScannerContract(), this::handleBarcode);
 
     @Override
@@ -63,7 +64,7 @@ public final class ReceivingTaskActivity extends AppCompatActivity {
         bindViews();
         findViewById(R.id.scanBoxButton).setOnClickListener(view -> {
             hideStateMessage();
-            scannerLauncher.launch(null);
+            scannerLauncher.launch(ScannerRequest.ean13());
         });
         findViewById(R.id.finishReceivingButton).setOnClickListener(view -> finishReceiving());
         renderTask();

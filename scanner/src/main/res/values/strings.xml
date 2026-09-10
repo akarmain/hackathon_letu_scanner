@@ -1,6 +1,8 @@
 <resources>
     <string name="scanner_preview">Изображение с камеры</string>
     <string name="scanner_hint">Поместите штрихкод EAN-13 в рамку</string>
+    <string name="scanner_product_hint">Поместите штрихкод EAN-13 товара в рамку</string>
+    <string name="scanner_location_hint">Наведите камеру на код ячейки</string>
     <string name="scanner_read_error">Не удалось считать штрихкод. Наведите камеру ещё раз</string>
     <string name="scanner_cancel">Отмена</string>
     <string name="scanner_permission_title">Нужен доступ к камере</string>
@@ -11,6 +13,11 @@
     <string name="scanner_manual_title">Ручной ввод</string>
     <string name="scanner_manual_message">Введите 13 цифр, напечатанных под штрихкодом коробки.</string>
     <string name="scanner_manual_hint">EAN-13 коробки</string>
+    <string name="scanner_product_manual_hint">EAN-13 товара</string>
+    <string name="scanner_location_manual_hint">Код ячейки</string>
+    <string name="scanner_product_manual_message">Введите 13 цифр, напечатанных под штрихкодом товара.</string>
+    <string name="scanner_location_manual_message">Введите код, напечатанный на ячейке.</string>
     <string name="scanner_manual_submit">Проверить код</string>
     <string name="scanner_manual_error">Введите ровно 13 цифр</string>
+    <string name="scanner_manual_empty_error">Введите код</string>
 </resources>

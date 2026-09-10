@@ -11,12 +11,16 @@ import androidx.annotation.Nullable;
  * Public scanner boundary used by operation screens. The implementation behind this
  * contract can be replaced without changing receiving business rules.
  */
-public final class BarcodeScannerContract extends ActivityResultContract<Void, String> {
+public final class BarcodeScannerContract extends ActivityResultContract<ScannerRequest, String> {
+
+    static final String EXTRA_SCAN_MODE = "warehouse.scanner.SCAN_MODE";
 
     @NonNull
     @Override
-    public Intent createIntent(@NonNull Context context, Void input) {
-        return new Intent(context, ScannerActivity.class);
+    public Intent createIntent(@NonNull Context context, ScannerRequest input) {
+        ScannerRequest request = input == null ? ScannerRequest.ean13() : input;
+        return new Intent(context, ScannerActivity.class)
+                .putExtra(EXTRA_SCAN_MODE, request.getMode());
     }
 
     @Nullable

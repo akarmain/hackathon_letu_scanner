@@ -32,6 +32,7 @@ public final class ScannerActivity extends AppCompatActivity {
     private ScannerEngine scannerEngine;
     private boolean scannerStarted;
     private boolean returningResult;
+    private int scanMode;
 
     private final ActivityResultLauncher<String> permissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
@@ -46,6 +47,10 @@ public final class ScannerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
+        scanMode = getIntent().getIntExtra(
+                BarcodeScannerContract.EXTRA_SCAN_MODE,
+                ScannerRequest.MODE_EAN_13
+        );
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
@@ -87,12 +92,12 @@ public final class ScannerActivity extends AppCompatActivity {
     private void showScanner() {
         permissionPanel.setVisibility(View.GONE);
         previewView.setVisibility(View.VISIBLE);
-        statusText.setText(R.string.scanner_hint);
+        statusText.setText(getScannerHint());
         if (scannerStarted) {
             return;
         }
         scannerStarted = true;
-        scannerEngine = new MlKitScannerEngine(this, previewView);
+        scannerEngine = new MlKitScannerEngine(this, previewView, scanMode);
         scannerEngine.start(new ScannerEngine.Callback() {
             @Override
             public void onBarcode(String value) {
@@ -130,15 +135,20 @@ public final class ScannerActivity extends AppCompatActivity {
     private void showManualEntryDialog() {
         stopScanner();
         EditText barcodeInput = new EditText(this);
-        barcodeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-        barcodeInput.setHint(R.string.scanner_manual_hint);
-        barcodeInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
+        boolean eanOnly = scanMode != ScannerRequest.MODE_LOCATION;
+        barcodeInput.setInputType(eanOnly
+                ? InputType.TYPE_CLASS_NUMBER
+                : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+        barcodeInput.setHint(getManualHint());
+        barcodeInput.setFilters(new InputFilter[]{
+                new InputFilter.LengthFilter(eanOnly ? 13 : 64)
+        });
         int padding = Math.round(24 * getResources().getDisplayMetrics().density);
         barcodeInput.setPadding(padding, padding / 2, padding, padding / 2);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.scanner_manual_title)
-                .setMessage(R.string.scanner_manual_message)
+                .setMessage(getManualMessage())
                 .setView(barcodeInput)
                 .setNegativeButton(R.string.scanner_cancel, null)
                 .setPositiveButton(R.string.scanner_manual_submit, null)
@@ -147,8 +157,13 @@ public final class ScannerActivity extends AppCompatActivity {
             barcodeInput.requestFocus();
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
                 String barcode = barcodeInput.getText().toString().trim();
-                if (!barcode.matches("\\d{13}")) {
-                    barcodeInput.setError(getString(R.string.scanner_manual_error));
+                if ((eanOnly && !barcode.matches("\\d{13}"))
+                        || (!eanOnly && barcode.isEmpty())) {
+                    barcodeInput.setError(getString(
+                            eanOnly
+                                    ? R.string.scanner_manual_error
+                                    : R.string.scanner_manual_empty_error
+                    ));
                     return;
                 }
                 returningResult = true;
@@ -162,6 +177,36 @@ public final class ScannerActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+    private int getScannerHint() {
+        if (scanMode == ScannerRequest.MODE_PRODUCT) {
+            return R.string.scanner_product_hint;
+        }
+        if (scanMode == ScannerRequest.MODE_LOCATION) {
+            return R.string.scanner_location_hint;
+        }
+        return R.string.scanner_hint;
+    }
+
+    private int getManualHint() {
+        if (scanMode == ScannerRequest.MODE_LOCATION) {
+            return R.string.scanner_location_manual_hint;
+        }
+        if (scanMode == ScannerRequest.MODE_PRODUCT) {
+            return R.string.scanner_product_manual_hint;
+        }
+        return R.string.scanner_manual_hint;
+    }
+
+    private int getManualMessage() {
+        if (scanMode == ScannerRequest.MODE_LOCATION) {
+            return R.string.scanner_location_manual_message;
+        }
+        if (scanMode == ScannerRequest.MODE_PRODUCT) {
+            return R.string.scanner_product_manual_message;
+        }
+        return R.string.scanner_manual_message;
     }
 
     private void stopScanner() {
