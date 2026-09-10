@@ -1,0 +1,154 @@
+{
+  "note": "Тестовые товары вымышлены. image_url содержит референсные бесплатные изображения упаковки соответствующего типа, а не изображения конкретного вымышленного товара.",
+  "products": [
+    {
+      "id": 1,
+      "sku": "PERF-001",
+      "name": "NOIRÉ Eau de Parfum 50 мл",
+      "description": "Парфюмерная вода с древесно-цитрусовым ароматом. Флакон 50 мл.",
+      "category": "Парфюмерия",
+      "price_rub": 5490.0,
+      "marking_type": "qr",
+      "width_mm": 72.0,
+      "height_mm": 115.0,
+      "depth_mm": 45.0,
+      "image_url": "https://s3.akarmain.ru/S/NOIRÉ Eau de Parfum 50.jpg",
+      "image_type": "representative",
+      "qr_codes": [
+        "QR-PERF001-000001",
+        "QR-PERF001-000002",
+        "QR-PERF001-000003",
+        "QR-PERF001-000004"
+      ]
+    },
+    {
+      "id": 2,
+      "sku": "MAKE-001",
+      "name": "VELVET LINE Матовая помада 4,2 г",
+      "description": "Стойкая матовая помада с насыщенным цветом. Масса 4,2 г.",
+      "category": "Декоративная косметика",
+      "price_rub": 1190.0,
+      "marking_type": "qr",
+      "width_mm": 28.0,
+      "height_mm": 92.0,
+      "depth_mm": 28.0,
+      "image_url": "https://s3.akarmain.ru/S/VELVET_LINE.jpg",
+      "image_type": "representative",
+      "qr_codes": [
+        "QR-MAKE001-000001",
+        "QR-MAKE001-000002",
+        "QR-MAKE001-000003"
+      ]
+    },
+    {
+      "id": 3,
+      "sku": "MAKE-002",
+      "name": "LUMIÈRE Volume Тушь для ресниц 10 мл",
+      "description": "Тушь для придания объёма и разделения ресниц. Объём 10 мл.",
+      "category": "Декоративная косметика",
+      "price_rub": 1390.0,
+      "marking_type": "qr",
+      "width_mm": 24.0,
+      "height_mm": 135.0,
+      "depth_mm": 24.0,
+      "image_url": "https://s3.akarmain.ru/S/LUMIÈRE_T_Volume.jpg",
+      "image_type": "representative",
+      "qr_codes": [
+        "QR-MAKE002-000001",
+        "QR-MAKE002-000002",
+        "QR-MAKE002-000003"
+      ]
+    },
+    {
+      "id": 4,
+      "sku": "SKIN-001",
+      "name": "AURELIA Увлажняющий крем для лица 50 мл",
+      "description": "Увлажняющий крем для ежедневного ухода за кожей лица. Объём 50 мл.",
+      "category": "Уход за лицом",
+      "price_rub": 1890.0,
+      "marking_type": "barcode",
+      "width_mm": 65.0,
+      "height_mm": 65.0,
+      "depth_mm": 65.0,
+      "image_url": "https://s3.akarmain.ru/S/AURELIA_Увлажняющий_крем.jpg",
+      "image_type": "representative",
+      "barcode": {
+        "code": "4609001000017",
+        "format": "EAN_13"
+      }
+    },
+    {
+      "id": 5,
+      "sku": "HAIR-001",
+      "name": "BOTANICA Repair Шампунь 400 мл",
+      "description": "Восстанавливающий шампунь для повреждённых волос. Объём 400 мл.",
+      "category": "Уход за волосами",
+      "price_rub": 790.0,
+      "marking_type": "barcode",
+      "width_mm": 72.0,
+      "height_mm": 205.0,
+      "depth_mm": 55.0,
+      "image_url": "https://s3.akarmain.ru/S/BOTANICA_Repair.jpg",
+      "image_type": "representative",
+      "barcode": {
+        "code": "4609001000024",
+        "format": "EAN_13"
+      }
+    },
+    {
+      "id": 6,
+      "sku": "BODY-001",
+      "name": "PUREMINT Гель для душа 500 мл",
+      "description": "Освежающий гель для душа с мятным ароматом. Объём 500 мл.",
+      "category": "Уход за телом",
+      "price_rub": 590.0,
+      "marking_type": "barcode",
+      "width_mm": 76.0,
+      "height_mm": 220.0,
+      "depth_mm": 58.0,
+      "image_url": "https://s3.akarmain.ru/S/PUREMINT_Гель.jpg",
+      "image_type": "representative",
+      "barcode": {
+        "code": "4609001000031",
+        "format": "EAN_13"
+      }
+    },
+    {
+      "id": 7,
+      "sku": "SKIN-002",
+      "name": "DERMA SOFT Пенка для умывания 150 мл",
+      "description": "Мягкая очищающая пенка для ежедневного умывания. Объём 150 мл.",
+      "category": "Уход за лицом",
+      "price_rub": 990.0,
+      "marking_type": "barcode",
+      "width_mm": 52.0,
+      "height_mm": 175.0,
+      "depth_mm": 45.0,
+      "image_url": "https://s3.akarmain.ru/S/DERMA_SOFT.jpg",
+      "image_type": "representative",
+      "barcode": {
+        "code": "4609001000048",
+        "format": "EAN_13"
+      }
+    },
+    {
+      "id": 8,
+      "sku": "SKIN-003",
+      "name": "SOLARIS SPF 50 Флюид для лица 50 мл",
+      "description": "Лёгкий солнцезащитный флюид SPF 50 для лица. Объём 50 мл.",
+      "category": "Солнцезащитные средства",
+      "price_rub": 1590.0,
+      "marking_type": "qr",
+      "width_mm": 45.0,
+      "height_mm": 125.0,
+      "depth_mm": 35.0,
+      "image_url": "https://s3.akarmain.ru/S/SOLARIS.jpg",
+      "image_type": "representative",
+      "qr_codes": [
+        "QR-SKIN003-000001",
+        "QR-SKIN003-000002",
+        "QR-SKIN003-000003"
+      ]
+    }
+  ]
+}

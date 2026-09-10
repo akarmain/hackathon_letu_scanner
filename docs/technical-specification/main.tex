@@ -1,0 +1,44 @@
+\documentclass[12pt,a4paper]{article}
+\input{preamble}
+
+\begin{document}
+
+\begin{titlepage}
+  \pagecolor{LetyTechBlue}
+  \color{white}
+  \thispagestyle{empty}
+  \vspace*{16mm}
+  {\fontsize{21}{24}\selectfont\bfseries ПРОЕКТНАЯ ДОКУМЕНТАЦИЯ\par}
+  \vspace{4mm}
+  \vfill
+  {\raggedright\fontsize{30}{36}\selectfont\bfseries Рабочий прототип мобильного сканера для сотрудников\par}
+  \vspace{7mm}
+
+  \vfill
+  \begin{tabular}{@{}ll@{}}
+    Дата: & 11 сентября 2026 г. \\
+    Команда: & CRM\_14 \\
+    Тимлид: & Кармаев Андрей Александрович, ИНБО-30-25 \\
+    Java разработчик: & Рахимов Шамиль Рашитович, ЭФБО-02-25 \\
+    Дизайнер: & Маркина Майя Витальевна, ЭФБО-02-25 \\
+    Дизайнер: & Полухина Елизавета Константиновна, ЭФБО-02-25 \\
+    Аналитик: & Кучин Иван Вадимович, ЭПБО-01-25 \\
+  \end{tabular}
+  \vfill
+  \vspace*{10mm}
+\end{titlepage}
+\nopagecolor
+\color{black}
+
+\tableofcontents
+\clearpage
+
+\input{sections/01-document-control}
+\input{sections/02-product-scope}
+\input{sections/02-technical-part}
+\input{sections/03-functional-requirements}
+\input{sections/04-architecture-and-data}
+\input{sections/05-nonfunctional-requirements}
+\input{sections/06-acceptance-criteria}
+
+\end{document}

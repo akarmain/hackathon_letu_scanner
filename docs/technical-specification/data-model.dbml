@@ -1,0 +1,56 @@
+// Логическая модель данных складского сканера.
+// Категории адаптированы под ассортимент Л'Этуаль.
+
+Enum product_category {
+  fragrance
+  makeup
+  skincare
+  haircare
+  bodycare
+  accessories
+  other
+}
+
+Enum measurement_unit {
+  pcs
+  kg
+  liter
+  box
+  meter
+}
+
+Table local_inventory_cache {
+  id bigint [pk, increment, note: 'Локальный ID строки']
+  barcode varchar(13) [not null, note: 'Штрихкод EAN-13']
+  sku varchar(64) [note: 'Артикул товара']
+  name varchar(255) [not null, note: 'Название товара']
+  category product_category [note: 'Категория товара']
+  price decimal(10, 2) [note: 'Цена в рублях']
+  quantity int [not null, default: 0, note: 'Количество']
+  unit measurement_unit [note: 'Единица измерения']
+  delivery_number varchar(128) [note: 'Номер поставки']
+  supplier varchar(255) [note: 'Поставщик']
+  receipt_date date [note: 'Дата приемки']
+  expires_at date [note: 'Срок годности']
+  cell_id bigint [ref: > storage_cells.id, note: 'NULL, пока товар находится в приемке']
+
+  indexes {
+    (barcode) [name: 'idx_inventory_barcode']
+    (cell_id) [name: 'idx_inventory_cell']
+  }
+}
+
+Table storage_cells {
+  id bigint [pk]
+  code varchar(64) [not null, note: 'Штрихкод ячейки, например CELL-A1']
+  name varchar(128) [note: 'Название для интерфейса']
+}
+
+Table sync_queue {
+  id varchar(36) [pk, note: 'UUID']
+  device_id bigint [not null, note: 'Идентификатор ТСД для аудита']
+  action_type varchar(64) [not null, note: 'RECEIPT, PLACEMENT и т. п.']
+  payload text [not null, note: 'JSON с данными действия']
+  status varchar(32) [not null, default: 'pending']
+  created_at timestamp [not null, default: `now()`]
+}

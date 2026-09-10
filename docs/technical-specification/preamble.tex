@@ -1,0 +1,83 @@
+\usepackage[a4paper,left=20mm,right=15mm,top=18mm,bottom=20mm]{geometry}
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{PT Sans}
+\setsansfont{PT Sans}
+\setmonofont{PT Mono}[Scale=0.88]
+
+\usepackage[table]{xcolor}
+\definecolor{Brand}{HTML}{1A2AF4}
+\definecolor{BrandDark}{HTML}{111EAD}
+\definecolor{LetyTechBlue}{HTML}{1A2AF4}
+\definecolor{LetyTechPattern}{HTML}{E2E5F0}
+\definecolor{Success}{HTML}{237A57}
+\definecolor{Light}{HTML}{F3F5FF}
+\definecolor{Muted}{HTML}{53617D}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\renewcommand{\figurename}{Рисунок}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=BrandDark,
+  urlcolor=Brand,
+  pdftitle={Техническое задание: рабочий прототип мобильного сканера},
+  pdfauthor={Проектная команда CRM\_14}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Brand}\bfseries ЛЭТУ.ТЕХ \textbar\ МИРЭА хакатон 26 \textbar\ Техническое задание CRM-14}
+\fancyhead[R]{\small\color{Muted}JavaТСД}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\headheight}{14pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\sloppy
+\renewcommand{\arraystretch}{1.22}
+\setcounter{tocdepth}{2}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\newcommand{\status}[1]{\textcolor{Success}{\textbf{#1}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\placeholder}[1]{\textcolor{Muted}{\textit{[Заполнить: #1]}}}
+\newcommand{\screenplaceholder}[1]{%
+  \begin{center}
+  \fcolorbox{Muted}{Light}{\begin{minipage}[c][52mm][c]{0.82\textwidth}\centering\color{Muted}\textbf{Место для экрана}\par\smallskip\placeholder{#1}\end{minipage}}
+  \end{center}%
+}
+\newcommand{\phonescreen}[3]{%
+  \begin{minipage}[t]{0.29\textwidth}
+    \centering
+    \IfFileExists{#2}{%
+      \includegraphics[width=\linewidth,height=62mm,keepaspectratio]{#2}%
+    }{%
+      \fcolorbox{Muted}{Light}{\begin{minipage}[c][62mm][c]{0.82\linewidth}\centering\color{Muted}\textbf{Скриншот #1}\par\smallskip\placeholder{#3}\end{minipage}}%
+    }%
+    \par\smallskip\footnotesize\textbf{#1.} #3
+  \end{minipage}%
+}
+\newcommand{\req}[4]{%
+  \subsubsection*{#1. #2}
+  \addcontentsline{toc}{subsubsection}{#1. #2}
+  \textbf{Требование.} #3
+
+  \textbf{Критерий проверки.} #4
+}
+
+\newenvironment{infobox}
+{\begin{center}\begin{minipage}{0.92\textwidth}\color{BrandDark}\textbf{Примечание}\par\smallskip}
+{\end{minipage}\end{center}}
