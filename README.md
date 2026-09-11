@@ -49,3 +49,5 @@ Android-прототип для складских операций. Реали�
 ```
 
 Готовый debug APK создаётся в `app/build/outputs/apk/debug/app-debug.apk`.
+
+Маркина Майя Витальевна
