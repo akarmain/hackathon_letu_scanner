@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="launcher_navy">#061B4D</color>
     <color name="warehouse_blue">#1976C9</color>
     <color name="warehouse_blue_dark">#125B9A</color>
     <color name="warehouse_blue_background">#E7F2FC</color>

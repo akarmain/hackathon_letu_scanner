@@ -1,12 +1,13 @@
 <resources>
-    <string name="app_name">Складские операции</string>
+    <string name="app_name">Складской сканер</string>
+    <string name="app_description">JavaТСД для локальной приёмки и размещения товара: задания, проверка EAN-13 и подтверждение операций без сети.</string>
     <string name="action_receiving">Приёмка</string>
     <string name="action_inventory">Инвентаризация</string>
     <string name="action_placement">Размещение</string>
     <string name="action_replenishment">Пополнение</string>
     <string name="operation_placeholder">%1$s\n\nЭкран будет добавлен на следующем этапе</string>
-    <string name="main_heading">Выберите операцию</string>
-    <string name="main_subheading">Откройте назначенное задание и следуйте подсказкам на экране</string>
+    <string name="main_heading">Складской сканер</string>
+    <string name="main_subheading">Локальные задания · офлайн-проверка EAN-13</string>
     <string name="receiving_title">Приёмка</string>
     <string name="invoice_list_heading">Выберите накладную</string>
     <string name="invoice_list_hint">Показаны назначенные вам поставки на сегодня</string>
@@ -17,13 +18,14 @@
     <string name="receiving_task_title">Задание на приёмку</string>
     <string name="receiving_total_progress">Принято коробок: %1$d из %2$d</string>
     <string name="task_items_heading">Коробки по накладной</string>
-    <string name="box_barcode">EAN коробки: %1$s</string>
+    <string name="box_barcodes">Уникальных EAN-13: %1$d</string>
     <string name="item_count">Отсканировано %1$d из %2$d коробок</string>
     <string name="action_scan_box">Сканировать коробку</string>
     <string name="action_finish_receiving">Завершить приёмку</string>
     <string name="scan_cancelled">Сканирование отменено. Данные не изменены.</string>
     <string name="invalid_barcode">Код не распознан как EAN-13. Наведите камеру ещё раз.</string>
     <string name="wrong_invoice">Коробка относится к другой накладной: %1$s. Подтверждение недоступно.</string>
+    <string name="box_already_received">Коробка с EAN %1$s уже обработана. Количество не изменено.</string>
     <string name="product_not_found">Товар не найден в задании. Повторите сканирование.</string>
     <string name="confirm_scan_title">Проверьте коробку</string>
     <string name="confirm_scan_details">%1$s\nEAN %2$s\nОтсканировано: %3$d из %4$d\n\nСостав одной коробки:\n%5$s</string>

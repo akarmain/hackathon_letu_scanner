@@ -2,6 +2,7 @@ package com.example.hackathon_letu_scanner.receiving;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** Pure receiving rules; it has no dependency on camera or Android UI. */
 public final class ReceivingPolicy {
@@ -9,6 +10,7 @@ public final class ReceivingPolicy {
     public ScanValidation validateBarcode(
             ReceivingInvoice currentInvoice,
             List<ReceivingInvoice> allInvoices,
+            Set<String> acceptedBarcodes,
             String rawBarcode
     ) {
         String barcode = rawBarcode == null ? "" : rawBarcode.trim();
@@ -18,7 +20,10 @@ public final class ReceivingPolicy {
 
         ReceivingItem currentItem = currentInvoice.findItemByBarcode(barcode);
         if (currentItem != null) {
-            return ScanValidation.match(currentItem);
+            if (acceptedBarcodes.contains(barcode)) {
+                return ScanValidation.alreadyReceived(currentItem, barcode);
+            }
+            return ScanValidation.match(currentItem, barcode);
         }
 
         for (ReceivingInvoice invoice : allInvoices) {
@@ -28,10 +33,6 @@ public final class ReceivingPolicy {
             }
         }
         return ScanValidation.failure(ScanValidation.Kind.NOT_FOUND);
-    }
-
-    public int confirmOneBox(int currentQuantity) {
-        return Math.addExact(currentQuantity, 1);
     }
 
     public boolean hasDiscrepancy(ReceivingInvoice invoice, Map<String, Integer> received) {

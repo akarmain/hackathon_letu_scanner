@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Single-colour form shown by Android in themed launcher icons. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M21,18h23v7H28v16h-7zM64,18h23v23h-7V25H64zM21,67h7v16h16v7H21zM80,67h7v23H64v-7h16zM34,35h8v38h-8zM66,35h8v38h-8zM42,46h24v7H42zM42,61h24v7H42zM45,38h18v8H45zM45,69h18v8H45z" />
+</vector>

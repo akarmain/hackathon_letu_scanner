@@ -40,7 +40,7 @@ public final class ReceivingInvoice {
 
     public ReceivingItem findItemByBarcode(String barcode) {
         for (ReceivingItem item : items) {
-            if (item.getBarcode().equals(barcode)) {
+            if (item.matchesBarcode(barcode)) {
                 return item;
             }
         }

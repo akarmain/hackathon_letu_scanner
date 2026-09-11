@@ -16,12 +16,27 @@ public class ReceivingPolicyTest {
     private ReceivingPolicy policy;
     private ReceivingInvoice currentInvoice;
     private ReceivingInvoice otherInvoice;
+    private String currentBarcode;
+    private String otherBarcode;
 
     @Before
     public void setUp() {
         policy = new ReceivingPolicy();
-        currentInvoice = invoice("ПН-01", "item-1", "4601234567893", 5);
-        otherInvoice = invoice("ПН-02", "item-2", "4602222222220", 2);
+        currentBarcode = "4609100100014";
+        otherBarcode = "4609100300018";
+        currentInvoice = invoice(
+                "ПН-01",
+                "item-1",
+                Arrays.asList(
+                        currentBarcode,
+                        "4609100100021"
+                )
+        );
+        otherInvoice = invoice(
+                "ПН-02",
+                "item-2",
+                Arrays.asList(otherBarcode, "4609100300025", "4609100300032")
+        );
     }
 
     @Test
@@ -29,7 +44,8 @@ public class ReceivingPolicyTest {
         ScanValidation result = policy.validateBarcode(
                 currentInvoice,
                 Arrays.asList(currentInvoice, otherInvoice),
-                "4601234567893"
+                Collections.emptySet(),
+                currentBarcode
         );
 
         assertEquals(ScanValidation.Kind.MATCH, result.getKind());
@@ -41,7 +57,8 @@ public class ReceivingPolicyTest {
         ScanValidation result = policy.validateBarcode(
                 currentInvoice,
                 Arrays.asList(currentInvoice, otherInvoice),
-                "4602222222220"
+                Collections.emptySet(),
+                otherBarcode
         );
 
         assertEquals(ScanValidation.Kind.WRONG_INVOICE, result.getKind());
@@ -52,7 +69,12 @@ public class ReceivingPolicyTest {
     public void malformedOrBadChecksumIsRejected() {
         assertEquals(
                 ScanValidation.Kind.INVALID_FORMAT,
-                policy.validateBarcode(currentInvoice, Collections.singletonList(currentInvoice), "123")
+                policy.validateBarcode(
+                        currentInvoice,
+                        Collections.singletonList(currentInvoice),
+                        Collections.emptySet(),
+                        "123"
+                )
                         .getKind()
         );
         assertFalse(ReceivingPolicy.isValidEan13("4601234567890"));
@@ -61,29 +83,35 @@ public class ReceivingPolicyTest {
     @Test
     public void discrepancyChecksEveryLine() {
         Map<String, Integer> received = new HashMap<>();
-        received.put("item-1", 5);
+        received.put("item-1", 2);
         assertFalse(policy.hasDiscrepancy(currentInvoice, received));
 
-        received.put("item-1", 4);
+        received.put("item-1", 1);
         assertTrue(policy.hasDiscrepancy(currentInvoice, received));
     }
 
     @Test
-    public void confirmationCountsExactlyOnePhysicalBox() {
-        assertEquals(3, policy.confirmOneBox(2));
+    public void alreadyAcceptedPhysicalBoxIsRejected() {
+        ScanValidation result = policy.validateBarcode(
+                currentInvoice,
+                Arrays.asList(currentInvoice, otherInvoice),
+                Collections.singleton(currentBarcode),
+                currentBarcode
+        );
+
+        assertEquals(ScanValidation.Kind.ALREADY_RECEIVED, result.getKind());
+        assertEquals(currentBarcode, result.getBarcode());
     }
 
     private ReceivingInvoice invoice(
             String invoiceId,
             String itemId,
-            String barcode,
-            int expected
+            java.util.List<String> barcodes
     ) {
         ReceivingItem item = new ReceivingItem(
                 itemId,
                 "Коробка",
-                barcode,
-                expected,
+                barcodes,
                 Collections.singletonList(new BoxContentItem("Товар", "АРТ. 1", 6))
         );
         return new ReceivingInvoice(

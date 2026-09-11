@@ -90,7 +90,7 @@ public final class ReceivingTaskActivity extends AppCompatActivity {
             View row = inflater.inflate(R.layout.item_receiving_line, itemContainer, false);
             ((TextView) row.findViewById(R.id.lineName)).setText(item.getName());
             ((TextView) row.findViewById(R.id.lineSku)).setText(
-                    getString(R.string.box_barcode, item.getBarcode())
+                    getString(R.string.box_barcodes, item.getBoxBarcodes().size())
             );
             ((TextView) row.findViewById(R.id.lineContents)).setText(formatContents(item));
             TextView count = row.findViewById(R.id.lineCount);
@@ -116,12 +116,19 @@ public final class ReceivingTaskActivity extends AppCompatActivity {
         ScanValidation validation = policy.validateBarcode(
                 invoice,
                 repository.getInvoices(),
+                repository.getAcceptedBarcodes(invoice.getId()),
                 barcode
         );
         repository.recordScan(invoice.getId(), barcode, validation.getKind());
         switch (validation.getKind()) {
             case MATCH:
-                showBoxConfirmation(validation.getItem());
+                showBoxConfirmation(validation.getItem(), validation.getBarcode());
+                break;
+            case ALREADY_RECEIVED:
+                showStateMessage(
+                        getString(R.string.box_already_received, validation.getBarcode()),
+                        true
+                );
                 break;
             case INVALID_FORMAT:
                 showStateMessage(R.string.invalid_barcode, true);
@@ -139,7 +146,7 @@ public final class ReceivingTaskActivity extends AppCompatActivity {
         }
     }
 
-    private void showBoxConfirmation(ReceivingItem item) {
+    private void showBoxConfirmation(ReceivingItem item, String barcode) {
         LinearLayout content = new LinearLayout(this);
         content.setOrientation(LinearLayout.VERTICAL);
         int padding = getResources().getDimensionPixelSize(R.dimen.dialog_padding);
@@ -150,7 +157,7 @@ public final class ReceivingTaskActivity extends AppCompatActivity {
         details.setText(getString(
                 R.string.confirm_scan_details,
                 item.getName(),
-                item.getBarcode(),
+                barcode,
                 alreadyReceived,
                 item.getExpectedQuantity(),
                 formatContents(item)
@@ -163,16 +170,17 @@ public final class ReceivingTaskActivity extends AppCompatActivity {
                 .setTitle(R.string.confirm_scan_title)
                 .setView(content)
                 .setNegativeButton(R.string.action_cancel, null)
-                .setPositiveButton(R.string.action_accept_box, (ignored, which) -> confirmBox(item))
+                .setPositiveButton(
+                        R.string.action_accept_box,
+                        (ignored, which) -> confirmBox(item, barcode)
+                )
                 .create();
         dialog.show();
     }
 
-    private void confirmBox(ReceivingItem item) {
-        try {
-            repository.confirmBox(invoice.getId(), item.getId(), policy);
-        } catch (ArithmeticException exception) {
-            showStateMessage(R.string.quantity_too_large, true);
+    private void confirmBox(ReceivingItem item, String barcode) {
+        if (!repository.confirmBox(invoice.getId(), item.getId(), barcode)) {
+            showStateMessage(getString(R.string.box_already_received, barcode), true);
             return;
         }
         renderTask();

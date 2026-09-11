@@ -6,17 +6,28 @@
         android:name="android.hardware.camera.any"
         android:required="false" />
 
+    <!-- Scanning works offline; internet access is used only for product images. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE"
+        tools:node="remove" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hackathon_letu_scanner">
+
+        <!-- Metadata for device-management and demo builds. Android does not have a
+             standard application-description field, so clients may read this value. -->
+        <meta-data
+            android:name="com.example.hackathon_letu_scanner.APP_DESCRIPTION"
+            android:value="@string/app_description" />
 
         <activity
             android:name=".OperationActivity"

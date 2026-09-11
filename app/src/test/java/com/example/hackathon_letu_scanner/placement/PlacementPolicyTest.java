@@ -35,11 +35,11 @@ public class PlacementPolicyTest {
         PlacementValidation result = policy.validateProduct(
                 items.get(0),
                 items,
-                "4609001000024"
+                "4609001000062"
         );
 
         assertEquals(PlacementValidation.Kind.WRONG_PRODUCT, result.getKind());
-        assertEquals("HAIR-001", result.getRelatedItem().getSku());
+        assertEquals("MAKE-001", result.getRelatedItem().getSku());
     }
 
     @Test
@@ -81,6 +81,7 @@ public class PlacementPolicyTest {
 
     @Test
     public void everyPlacementProductUsesValidEan13() {
+        assertEquals(3, items.size());
         for (PlacementItem item : items) {
             assertEquals("barcode", item.getMarkingType());
             assertEquals(1, item.getCodes().size());

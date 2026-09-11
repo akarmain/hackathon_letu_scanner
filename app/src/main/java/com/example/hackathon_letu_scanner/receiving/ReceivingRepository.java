@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** Local demo source isolated from the operation UI and scanner. */
 public final class ReceivingRepository {
-    private static final String PREFERENCES = "receiving_progress_v2";
+    private static final String PREFERENCES = "receiving_progress_v4";
     private static ReceivingRepository instance;
 
     private final SharedPreferences preferences;
@@ -25,6 +27,7 @@ public final class ReceivingRepository {
         preferences = applicationContext.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         photoDirectory = new File(applicationContext.getCacheDir(), "receiving");
         invoices = createDemoInvoices();
+        validateDemoInvoices(invoices);
     }
 
     public static synchronized ReceivingRepository get(Context context) {
@@ -48,7 +51,23 @@ public final class ReceivingRepository {
     }
 
     public int getReceived(String invoiceId, String itemId) {
-        return preferences.getInt(quantityKey(invoiceId, itemId), 0);
+        ReceivingInvoice invoice = findInvoice(invoiceId);
+        if (invoice == null) {
+            return 0;
+        }
+        Set<String> acceptedBarcodes = getAcceptedBarcodes(invoiceId);
+        for (ReceivingItem item : invoice.getItems()) {
+            if (item.getId().equals(itemId)) {
+                int count = 0;
+                for (String barcode : item.getBoxBarcodes()) {
+                    if (acceptedBarcodes.contains(barcode)) {
+                        count++;
+                    }
+                }
+                return count;
+            }
+        }
+        return 0;
     }
 
     public Map<String, Integer> getReceived(String invoiceId) {
@@ -70,14 +89,33 @@ public final class ReceivingRepository {
         return total;
     }
 
-    public synchronized int confirmBox(
+    public Set<String> getAcceptedBarcodes(String invoiceId) {
+        Set<String> saved = preferences.getStringSet(acceptedBarcodesKey(invoiceId), null);
+        if (saved == null) {
+            return Collections.emptySet();
+        }
+        return Collections.unmodifiableSet(new LinkedHashSet<>(saved));
+    }
+
+    public synchronized boolean confirmBox(
             String invoiceId,
             String itemId,
-            ReceivingPolicy policy
+            String barcode
     ) {
-        int updated = policy.confirmOneBox(getReceived(invoiceId, itemId));
-        preferences.edit().putInt(quantityKey(invoiceId, itemId), updated).apply();
-        return updated;
+        ReceivingInvoice invoice = findInvoice(invoiceId);
+        ReceivingItem matchingItem = invoice == null ? null : invoice.findItemByBarcode(barcode);
+        if (matchingItem == null || !matchingItem.getId().equals(itemId)) {
+            throw new IllegalArgumentException("Barcode does not belong to the receiving item");
+        }
+
+        Set<String> acceptedBarcodes = new LinkedHashSet<>(getAcceptedBarcodes(invoiceId));
+        if (!acceptedBarcodes.add(barcode)) {
+            return false;
+        }
+        preferences.edit()
+                .putStringSet(acceptedBarcodesKey(invoiceId), acceptedBarcodes)
+                .apply();
+        return true;
     }
 
     public synchronized void recordScan(
@@ -158,8 +196,8 @@ public final class ReceivingRepository {
         }
     }
 
-    private static String quantityKey(String invoiceId, String itemId) {
-        return "quantity." + invoiceId + "." + itemId;
+    private static String acceptedBarcodesKey(String invoiceId) {
+        return "accepted_barcodes." + invoiceId;
     }
 
     private static String completedKey(String invoiceId) {
@@ -191,8 +229,10 @@ public final class ReceivingRepository {
                         new ReceivingItem(
                                 "sauvage",
                                 "Коробка BL-01",
-                                "4601234567893",
-                                5,
+                                Arrays.asList(
+                                        "4609100100014",
+                                        "4609100100021"
+                                ),
                                 Arrays.asList(
                                         new BoxContentItem(
                                                 "Dior Sauvage, туалетная вода 100 мл",
@@ -209,8 +249,9 @@ public final class ReceivingRepository {
                         new ReceivingItem(
                                 "lancome",
                                 "Коробка BL-02",
-                                "4601111111119",
-                                3,
+                                Arrays.asList(
+                                        "4609100200011"
+                                ),
                                 Arrays.asList(
                                         new BoxContentItem(
                                                 "Lancôme Hypnôse, тушь для ресниц",
@@ -234,8 +275,11 @@ public final class ReceivingRepository {
                         new ReceivingItem(
                                 "clarins",
                                 "Коробка PS-01",
-                                "4602222222220",
-                                4,
+                                Arrays.asList(
+                                        "4609100300018",
+                                        "4609100300025",
+                                        "4609100300032"
+                                ),
                                 Arrays.asList(
                                         new BoxContentItem(
                                                 "Clarins Lip Comfort Oil, масло для губ",
@@ -252,8 +296,10 @@ public final class ReceivingRepository {
                         new ReceivingItem(
                                 "boss",
                                 "Коробка PS-02",
-                                "4603333333331",
-                                2,
+                                Arrays.asList(
+                                        "4609100400015",
+                                        "4609100400022"
+                                ),
                                 Arrays.asList(
                                         new BoxContentItem(
                                                 "Hugo Boss Bottled, туалетная вода 50 мл",
@@ -270,5 +316,21 @@ public final class ReceivingRepository {
                 )
         );
         return Arrays.asList(first, second);
+    }
+
+    private static void validateDemoInvoices(List<ReceivingInvoice> demoInvoices) {
+        Set<String> uniqueBarcodes = new LinkedHashSet<>();
+        for (ReceivingInvoice invoice : demoInvoices) {
+            for (ReceivingItem item : invoice.getItems()) {
+                for (String barcode : item.getBoxBarcodes()) {
+                    if (!ReceivingPolicy.isValidEan13(barcode)) {
+                        throw new IllegalStateException("Invalid demo EAN-13: " + barcode);
+                    }
+                    if (!uniqueBarcodes.add(barcode)) {
+                        throw new IllegalStateException("Duplicate demo box barcode: " + barcode);
+                    }
+                }
+            }
+        }
     }
 }
